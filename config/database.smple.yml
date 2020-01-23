@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: Test_Factris_development
+
+test:
+  <<: *default
+  database: Test_Factris_test
+
+production:
+  <<: *default
+  database: Test_Factris_production
+  username: Test_Factris
+  password: <%= ENV['TEST_FACTRIS_DATABASE_PASSWORD'] %>
