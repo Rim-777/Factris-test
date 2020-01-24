@@ -1,7 +1,7 @@
 require "trailblazer/operation"
 class Contract::Create < Trailblazer::Operation
   step :validate_attributes
-  step :validate_date_sequence
+  step :validate_dates_sequence
   step :init_new_contract
   step :create_and_supersede
 
@@ -14,10 +14,10 @@ class Contract::Create < Trailblazer::Operation
     validation_success
   end
 
-  def validate_date_sequence(options, params)
+  def validate_dates_sequence(options, params)
     return true unless end_date = params[:end_date]
     sequence_valid = end_date.to_date >= params[:start_date].to_date
-    options[:errors] = {error: I18n.t('errors.date_sequence')} unless sequence_valid
+    options[:errors] = {dates_sequence: [I18n.t('errors.date_sequence')]} unless sequence_valid
     sequence_valid
   end
 
