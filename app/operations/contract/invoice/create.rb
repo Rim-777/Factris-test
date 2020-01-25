@@ -31,12 +31,13 @@ class Contract::Invoice::Create < Trailblazer::Operation
 
   def calculate_fees(options, params)
     invoice_amount = @invoice.amount
-    fixed_fee_period_end = @invoice.purchase_date + @contract.days_included
-    additional_fee_period = (fixed_fee_period_end.to_date..(@invoice.paid_date.to_date || Date.today)).count
+    fixed_fee_period_end = @invoice.purchase_date.to_date + @contract.days_included
+    additional_fee_period = (fixed_fee_period_end..(@invoice.paid_date.try(:to_date) || Date.today)).count
     @invoice.fixed_fee = @contract.fixed_fee_rate / 100 * invoice_amount
     @invoice.additional_fee = @contract.additional_fee_rate / 100 * additional_fee_period * invoice_amount
     @invoice.total_fee = @invoice.fixed_fee + @invoice.additional_fee
     @invoice.save!
     options[:result] = @invoice
   end
+
 end
