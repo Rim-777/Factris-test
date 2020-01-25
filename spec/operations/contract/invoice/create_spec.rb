@@ -1,7 +1,7 @@
 require 'rails_helper'
 RSpec.describe Contract::Invoice::Create do
   let(:operation) do
-    Invoice::Create.(invoice_attributes)
+    Contract::Invoice::Create.(invoice_attributes)
   end
 
   let!(:a77_contract_1) do
@@ -58,7 +58,7 @@ RSpec.describe Contract::Invoice::Create do
       end
 
       it 'stores a new invoice to the database' do
-        expect {operation}.to change(Invoice, :count).by(1)
+        expect {operation}.to change(Contract::Invoice, :count).by(1)
       end
 
       it 'relates the new invoice to the right contract' do
@@ -107,7 +107,7 @@ RSpec.describe Contract::Invoice::Create do
       end
 
       it 'stores a new invoice to the database' do
-        expect {operation}.to change(Invoice, :count).by(1)
+        expect {operation}.to change(Contract::Invoice, :count).by(1)
       end
 
       it 'relates the new invoice to the right contract' do
@@ -147,7 +147,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -173,7 +173,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -199,7 +199,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -227,7 +227,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -253,7 +253,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -279,7 +279,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -307,7 +307,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -333,7 +333,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -359,7 +359,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -387,7 +387,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -415,7 +415,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -441,7 +441,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -467,7 +467,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -495,7 +495,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -521,7 +521,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
@@ -547,7 +547,7 @@ RSpec.describe Contract::Invoice::Create do
         end
 
         it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Invoice, :count)
+          expect {operation}.to_not change(Contract::Invoice, :count)
         end
 
         it 'adds an error message to the operation errors' do
