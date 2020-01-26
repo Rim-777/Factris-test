@@ -14,8 +14,8 @@ NewContractSchema = Dry::Validation.Schema do
   required(:number).filled(:str?)
   required(:start_date).filled(:str?, :date?)
   optional(:end_date).maybe(:str?, :date?)
-  required(:fixed_fee_rate).filled(:float?)
-  required(:additional_fee_rate).filled(:float?)
+  required(:fixed_fee_rate).filled(:float?, gteq?: 0)
+  required(:additional_fee_rate).filled(:float?, gteq?: 0)
   required(:days_included).filled(:int?, gteq?: 0)
   required(:active).filled(:bool?)
 end

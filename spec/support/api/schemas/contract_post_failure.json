@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "number": {
+      "type": "array"
+    },
+    "start_date": {
+      "type": "array"
+    },
+    "end_date": {
+      "type": "array"
+    },
+    "fixed_fee_rate": {
+      "type": "array"
+    },
+    "additional_fee_rate": {
+      "type": "array"
+    },
+    "days_included": {
+      "type": "array"
+    },
+    "active": {
+      "type": "array"
+    },
+    "dates_sequence": {
+      "type": "array"
+    }
+  }
+}

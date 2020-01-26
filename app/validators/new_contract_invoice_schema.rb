@@ -16,5 +16,5 @@ NewContractInvoiceSchema = Dry::Validation.Schema do
   required(:due_date).filled(:str?, :date?)
   optional(:paid_date).maybe(:str?, :date?)
   required(:purchase_date).filled(:str?, :date?)
-  required(:amount).filled(:float?)
+  required(:amount).filled(:float?, gt?: 0)
 end

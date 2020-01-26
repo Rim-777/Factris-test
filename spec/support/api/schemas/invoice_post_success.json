@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "contract_number",
+    "issue_date",
+    "purchase_date",
+    "paid_date",
+    "due_date",
+    "amount",
+    "fixed_fee",
+    "additional_fee",
+    "total_fee"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "contract_number": {
+      "type": "string"
+    },
+    "issue_date": {
+      "type": "string"
+    },
+    "purchase_date": {
+      "type": "string"
+    },
+    "paid_date": {
+      "type": "string"
+    },
+    "due_date": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "fixed_fee": {
+      "type": "number"
+    },
+    "additional_fee": {
+      "type": "number"
+    },
+    "total_fee": {
+      "type": "number"
+    }
+  }
+}

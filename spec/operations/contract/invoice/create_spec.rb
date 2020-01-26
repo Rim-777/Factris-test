@@ -65,6 +65,21 @@ RSpec.describe Contract::Invoice::Create do
         expect {operation}.to change(a77_contract_7.invoices, :count).by(1)
       end
 
+      it 'correctly assigns data' do
+        operation
+        expect(a77_contract_7.invoices.first.contract_number).to eq(invoice_attributes[:contract_number])
+        expect(a77_contract_7.invoices.first.issue_date).to eq(invoice_attributes[:issue_date])
+        expect(a77_contract_7.invoices.first.purchase_date).to eq(invoice_attributes[:purchase_date])
+        expect(a77_contract_7.invoices.first.paid_date).to eq(invoice_attributes[:paid_date])
+        expect(a77_contract_7.invoices.first.due_date).to eq(invoice_attributes[:due_date])
+        expect(a77_contract_7.invoices.first.amount).to eq(invoice_attributes[:amount])
+      end
+
+      it 'assigns invoice as an operation result' do
+        operation
+        expect(operation[:result]).to eq(a77_contract_7.invoices.first)
+      end
+
       it 'correctly calculates fees' do
         operation
         expect(a77_contract_7.invoices.first.fixed_fee).to eq(12.0)
@@ -95,7 +110,7 @@ RSpec.describe Contract::Invoice::Create do
         Hash[
             :contract_number, 'A77',
             :issue_date, 25.days.ago.to_date.to_s,
-            :purchase_date, 24.days.ago.to_date.to_s,
+            :purchase_date, 23.days.ago.to_date.to_s,
             :paid_date, nil,
             :due_date, 10.days.from_now.to_date.to_s,
             :amount, 1000
@@ -112,6 +127,21 @@ RSpec.describe Contract::Invoice::Create do
 
       it 'relates the new invoice to the right contract' do
         expect {operation}.to change(a77_contract_7.invoices, :count).by(1)
+      end
+
+      it 'correctly assigns data' do
+        operation
+        expect(a77_contract_7.invoices.first.contract_number).to eq(invoice_attributes[:contract_number])
+        expect(a77_contract_7.invoices.first.issue_date).to eq(invoice_attributes[:issue_date])
+        expect(a77_contract_7.invoices.first.purchase_date).to eq(invoice_attributes[:purchase_date])
+        expect(a77_contract_7.invoices.first.paid_date).to eq(invoice_attributes[:paid_date])
+        expect(a77_contract_7.invoices.first.due_date).to eq(invoice_attributes[:due_date])
+        expect(a77_contract_7.invoices.first.amount).to eq(invoice_attributes[:amount])
+      end
+
+      it 'assigns invoice as an operation result' do
+        operation
+        expect(operation[:result]).to eq(a77_contract_7.invoices.first)
       end
 
       it 'correctly calculates fees' do
@@ -554,6 +584,86 @@ RSpec.describe Contract::Invoice::Create do
           operation
           expect(operation[:errors]).to eq({amount: ['must be a float']})
         end
+      end
+
+      context 'is negative' do
+        let(:invoice_attributes) do
+          Hash[
+              :contract_number, "A77",
+              :issue_date, '2020-03-16',
+              :purchase_date, '2020-03-17',
+              :paid_date, '2020-04-08',
+              :due_date, '2020-03-29',
+              :amount, - 10
+          ]
+        end
+
+        it 'returns failure' do
+          expect(operation).to be_failure
+        end
+
+        it "doest't store any invoices to the database" do
+          expect {operation}.to_not change(Contract::Invoice, :count)
+        end
+
+        it 'adds an error message to the operation errors' do
+          operation
+          expect(operation[:errors]).to eq({amount: ['must be greater than 0']})
+        end
+      end
+    end
+
+    context 'contract is missing' do
+      let(:invoice_attributes) do
+        Hash[
+            :contract_number, 'not existing number',
+            :issue_date, '2020-03-16',
+            :purchase_date, '2020-03-16',
+            :paid_date, '2020-04-08',
+            :due_date, '2020-03-30',
+            :amount, 1000
+        ]
+      end
+
+      it 'returns failure' do
+        expect(operation).to be_failure
+      end
+
+      it "doest't store any invoices to the database" do
+        expect {operation}.to_not change(Contract::Invoice, :count)
+      end
+
+      it 'adds an error message to the operation errors' do
+        operation
+        expect(operation[:errors]).to eq({contract: ['is missing or inactive']})
+      end
+    end
+
+    context 'contract is inactive' do
+      let(:invoice_attributes) do
+        Hash[
+            :contract_number, 'A77',
+            :issue_date, '2020-03-16',
+            :purchase_date, '2020-03-16',
+            :paid_date, '2020-04-08',
+            :due_date, '2020-03-30',
+            :amount, 1000
+        ]
+      end
+
+      before {Contract.update_all(active: false)}
+
+      it 'returns failure' do
+        expect(operation).to be_failure
+      end
+
+      it "doest't store any invoices to the database" do
+        expect {operation}.to_not change(Contract::Invoice, :count)
+      end
+
+      it 'adds an error message to the operation errors' do
+        operation
+        expect(operation[:errors]).to eq({contract: ['is missing or inactive']})
       end
     end
   end

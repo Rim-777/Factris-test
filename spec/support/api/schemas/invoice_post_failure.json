@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "contract": {
+      "type": "array"
+    },
+    "contract_number": {
+      "type": "array"
+    },
+    "issue_date": {
+      "type": "array"
+    },
+    "purchase_date": {
+      "type": "array"
+    },
+    "paid_date": {
+      "type": "array"
+    },
+    "doe_date": {
+      "type": "array"
+    },
+    "amount": {
+      "type": "array"
+    }
+  }
+}

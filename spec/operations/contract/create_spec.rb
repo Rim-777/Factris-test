@@ -122,6 +122,17 @@ RSpec.describe Contract::Create do
         expect {operation}.to change(Contract, :count).by(1)
       end
 
+      it 'correctly assigns data' do
+        operation
+        expect(operation[:result].number).to eq(contract_attributes[:number])
+        expect(operation[:result].start_date).to eq(contract_attributes[:start_date])
+        expect(operation[:result].end_date).to eq(contract_attributes[:end_date])
+        expect(operation[:result].fixed_fee_rate).to eq(contract_attributes[:fixed_fee_rate])
+        expect(operation[:result].additional_fee_rate).to eq(contract_attributes[:additional_fee_rate])
+        expect(operation[:result].days_included).to eq(contract_attributes[:days_included])
+        expect(operation[:result].active).to eq(contract_attributes[:active])
+      end
+
       it 'makes overlapped contracts inactive' do
         operation
         expect(a77_contract_1.reload.active?).to be_falsey
@@ -520,6 +531,33 @@ RSpec.describe Contract::Create do
           expect(operation[:errors]).to eq({fixed_fee_rate: ['must be a float']})
         end
       end
+
+      context 'is negative' do
+        let(:contract_attributes) do
+          Hash[
+              :number, "A77",
+              :start_date, '2020-03-15',
+              :end_date, '2020-03-30',
+              :fixed_fee_rate, - 5,
+              :additional_fee_rate, 1.2,
+              :days_included, 14,
+              :active, true
+          ]
+        end
+
+        it 'returns success' do
+          expect(operation).to be_failure
+        end
+
+        it "doesn't store a new contract to the database" do
+          expect {operation}.to_not change(Contract, :count)
+        end
+
+        it 'adds an error message to the operation error list' do
+          operation
+          expect(operation[:errors]).to eq({fixed_fee_rate: ['must be greater than or equal to 0']})
+        end
+      end
     end
 
     context 'invalid additional fee rate' do
@@ -601,6 +639,33 @@ RSpec.describe Contract::Create do
         it 'adds an error message to the operation error list' do
           operation
           expect(operation[:errors]).to eq({additional_fee_rate: ['must be a float']})
+        end
+      end
+
+      context 'is negative' do
+        let(:contract_attributes) do
+          Hash[
+              :number, "A77",
+              :start_date, '2020-03-15',
+              :end_date, '2020-03-30',
+              :fixed_fee_rate, 2,
+              :additional_fee_rate, - 2,
+              :days_included, 14,
+              :active, true
+          ]
+        end
+
+        it 'returns success' do
+          expect(operation).to be_failure
+        end
+
+        it "doesn't store a new contract to the database" do
+          expect {operation}.to_not change(Contract, :count)
+        end
+
+        it 'adds an error message to the operation error list' do
+          operation
+          expect(operation[:errors]).to eq({additional_fee_rate: ['must be greater than or equal to 0']})
         end
       end
     end

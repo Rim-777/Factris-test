@@ -21,7 +21,7 @@ class Contract::Invoice::Create < Trailblazer::Operation
                     .where('start_date <= ?', issue_date)
                     .where('end_date IS NULL OR end_date >= ?', issue_date).first
     contract_present = @contract.present?
-    options[:errors] = {error: I18n.t('errors.missing_contract')} unless contract_present
+    options[:errors] = {contract: [I18n.t('errors.missing_contract')]} unless contract_present
     contract_present
   end
 
