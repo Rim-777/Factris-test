@@ -52,7 +52,7 @@ for active contracts.
 For validation, except the validation rules described in the assignment I also was guided only 
 by logic that was absolutely obvious to me.
 For example, that the start date of a contract can't be later than the end date,
-or that a invoice amount can't be a negative number, etc.
+or that an invoice amount can't be a negative number, etc.
 
 At that time, I didn't apply validations for cases that weren't absolutely clear to me. 
 For example: I allowed that a period of a contract could be shorter than days_included value, etc  

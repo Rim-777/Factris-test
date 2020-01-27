@@ -557,6 +557,7 @@ RSpec.describe Contract::Create do
               :end_date, '2020-03-30',
               :fixed_fee_rate, 1.2,
               :additional_fee_rate, 1.2,
+              :days_included, 10
           ]
         end
 
