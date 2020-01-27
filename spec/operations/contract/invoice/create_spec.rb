@@ -53,44 +53,7 @@ RSpec.describe Contract::Invoice::Create do
         ]
       end
 
-      it 'returns success' do
-        expect(operation).to be_success
-      end
-
-      it 'stores a new invoice to the database' do
-        expect {operation}.to change(Contract::Invoice, :count).by(1)
-      end
-
-      it 'relates the new invoice to the right contract' do
-        expect {operation}.to change(a77_contract_7.invoices, :count).by(1)
-      end
-
-      it 'correctly assigns data' do
-        operation
-        expect(a77_contract_7.invoices.first.contract_number).to eq(invoice_attributes[:contract_number])
-        expect(a77_contract_7.invoices.first.issue_date).to eq(invoice_attributes[:issue_date])
-        expect(a77_contract_7.invoices.first.purchase_date).to eq(invoice_attributes[:purchase_date])
-        expect(a77_contract_7.invoices.first.paid_date).to eq(invoice_attributes[:paid_date])
-        expect(a77_contract_7.invoices.first.due_date).to eq(invoice_attributes[:due_date])
-        expect(a77_contract_7.invoices.first.amount).to eq(invoice_attributes[:amount])
-      end
-
-      it 'assigns invoice as an operation result' do
-        operation
-        expect(operation[:result]).to eq(a77_contract_7.invoices.first)
-      end
-
-      it 'correctly calculates fees' do
-        operation
-        expect(a77_contract_7.invoices.first.fixed_fee).to eq(12.0)
-        expect(a77_contract_7.invoices.first.additional_fee).to eq(2.0)
-        expect(a77_contract_7.invoices.first.total_fee).to eq(14.0)
-      end
-
-      it 'correctly calculates fees' do
-        operation
-        expect(operation[:result]).to eq(a77_contract_7.invoices.first)
-      end
+      it_behaves_like 'InvoiceCreateSuccess'
     end
 
     context 'paid date is null' do
@@ -117,44 +80,7 @@ RSpec.describe Contract::Invoice::Create do
         ]
       end
 
-      it 'returns success' do
-        expect(operation).to be_success
-      end
-
-      it 'stores a new invoice to the database' do
-        expect {operation}.to change(Contract::Invoice, :count).by(1)
-      end
-
-      it 'relates the new invoice to the right contract' do
-        expect {operation}.to change(a77_contract_7.invoices, :count).by(1)
-      end
-
-      it 'correctly assigns data' do
-        operation
-        expect(a77_contract_7.invoices.first.contract_number).to eq(invoice_attributes[:contract_number])
-        expect(a77_contract_7.invoices.first.issue_date).to eq(invoice_attributes[:issue_date])
-        expect(a77_contract_7.invoices.first.purchase_date).to eq(invoice_attributes[:purchase_date])
-        expect(a77_contract_7.invoices.first.paid_date).to eq(invoice_attributes[:paid_date])
-        expect(a77_contract_7.invoices.first.due_date).to eq(invoice_attributes[:due_date])
-        expect(a77_contract_7.invoices.first.amount).to eq(invoice_attributes[:amount])
-      end
-
-      it 'assigns invoice as an operation result' do
-        operation
-        expect(operation[:result]).to eq(a77_contract_7.invoices.first)
-      end
-
-      it 'correctly calculates fees' do
-        operation
-        expect(a77_contract_7.invoices.first.fixed_fee).to eq(12.0)
-        expect(a77_contract_7.invoices.first.additional_fee).to eq(2.0)
-        expect(a77_contract_7.invoices.first.total_fee).to eq(14.0)
-      end
-
-      it 'correctly calculates fees' do
-        operation
-        expect(operation[:result]).to eq(a77_contract_7.invoices.first)
-      end
+      it_behaves_like 'InvoiceCreateSuccess'
     end
   end
 
@@ -172,17 +98,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({contract_number: ['is missing']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{contract_number: ['is missing']}}
         end
       end
 
@@ -198,17 +115,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({contract_number: ['must be filled']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{contract_number: ['must be filled']}}
         end
       end
 
@@ -224,17 +132,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({contract_number: ['must be a string']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{contract_number: ['must be a string']}}
         end
       end
     end
@@ -252,17 +151,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({issue_date: ['is missing']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{issue_date: ['is missing']}}
         end
       end
 
@@ -278,17 +168,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({issue_date: ['must be filled']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{issue_date: ['must be filled']}}
         end
       end
 
@@ -304,17 +185,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({issue_date: ['must be a date']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{issue_date: ['must be a date']}}
         end
       end
     end
@@ -332,17 +204,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({purchase_date: ['is missing']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{purchase_date: ['is missing']}}
         end
       end
 
@@ -358,17 +221,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({purchase_date: ['must be filled']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{purchase_date: ['must be filled']}}
         end
       end
 
@@ -384,17 +238,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({purchase_date: ['must be a date']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{purchase_date: ['must be a date']}}
         end
       end
     end
@@ -412,17 +257,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({paid_date: ['must be a date']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{paid_date: ['must be a date']}}
         end
       end
     end
@@ -440,17 +276,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({due_date: ['is missing']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{due_date: ['is missing']}}
         end
       end
 
@@ -466,17 +293,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({due_date: ['must be filled']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{due_date: ['must be filled']}}
         end
       end
 
@@ -492,17 +310,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({due_date: ['must be a date']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{due_date: ['must be a date']}}
         end
       end
     end
@@ -520,17 +329,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({amount: ['is missing']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors) {{amount: ['is missing']}}
         end
       end
 
@@ -546,17 +346,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({amount: ['must be filled']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors){ {amount: ['must be filled']}}
         end
       end
 
@@ -572,17 +363,8 @@ RSpec.describe Contract::Invoice::Create do
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({amount: ['must be a float']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors){ {amount: ['must be a float']}}
         end
       end
 
@@ -594,21 +376,12 @@ RSpec.describe Contract::Invoice::Create do
               :purchase_date, '2020-03-17',
               :paid_date, '2020-04-08',
               :due_date, '2020-03-29',
-              :amount, - 10
+              :amount, -10
           ]
         end
 
-        it 'returns failure' do
-          expect(operation).to be_failure
-        end
-
-        it "doest't store any invoices to the database" do
-          expect {operation}.to_not change(Contract::Invoice, :count)
-        end
-
-        it 'adds an error message to the operation errors' do
-          operation
-          expect(operation[:errors]).to eq({amount: ['must be greater than 0']})
+        it_behaves_like 'InvalidInvoiceCreateOperation' do
+          let(:errors){ {amount: ['must be greater than 0']}}
         end
       end
     end
@@ -625,17 +398,8 @@ RSpec.describe Contract::Invoice::Create do
         ]
       end
 
-      it 'returns failure' do
-        expect(operation).to be_failure
-      end
-
-      it "doest't store any invoices to the database" do
-        expect {operation}.to_not change(Contract::Invoice, :count)
-      end
-
-      it 'adds an error message to the operation errors' do
-        operation
-        expect(operation[:errors]).to eq({contract: ['is missing or inactive']})
+      it_behaves_like 'InvalidInvoiceCreateOperation' do
+        let(:errors){ {contract: ['is missing or inactive']}}
       end
     end
 
@@ -653,17 +417,8 @@ RSpec.describe Contract::Invoice::Create do
 
       before {Contract.update_all(active: false)}
 
-      it 'returns failure' do
-        expect(operation).to be_failure
-      end
-
-      it "doest't store any invoices to the database" do
-        expect {operation}.to_not change(Contract::Invoice, :count)
-      end
-
-      it 'adds an error message to the operation errors' do
-        operation
-        expect(operation[:errors]).to eq({contract: ['is missing or inactive']})
+      it_behaves_like 'InvalidInvoiceCreateOperation' do
+        let(:errors){ {contract: ['is missing or inactive']}}
       end
     end
   end
