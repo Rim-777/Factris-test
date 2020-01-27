@@ -114,13 +114,7 @@ RSpec.describe Contract::Create do
         ]
       end
 
-      it 'returns success' do
-        expect(operation).to be_success
-      end
-
-      it 'stores a new contract to the database' do
-        expect {operation}.to change(Contract, :count).by(1)
-      end
+      it_behaves_like 'ContractCreateWithSupersede'
 
       it 'correctly assigns data' do
         operation
@@ -133,24 +127,9 @@ RSpec.describe Contract::Create do
         expect(operation[:result].active).to eq(contract_attributes[:active])
       end
 
-      it 'makes overlapped contracts inactive' do
-        operation
-        expect(a77_contract_1.reload.active?).to be_falsey
-        expect(a77_contract_2.reload.active?).to be_falsey
-        expect(a77_contract_3.reload.active?).to be_falsey
-        expect(a77_contract_4.reload.active?).to be_falsey
-        expect(a77_contract_5.reload.active?).to be_falsey
-        expect(a77_contract_6.reload.active?).to be_falsey
-      end
-
       it "does't change not overlapped contracts" do
         operation
         expect(a77_contract_7.reload.active?).to be_truthy
-      end
-
-      it "does't change other contracts" do
-        operation
-        expect(a78_contract.reload.active?).to be_truthy
       end
     end
 
@@ -191,23 +170,7 @@ RSpec.describe Contract::Create do
         )
       end
 
-      it 'returns success' do
-        expect(operation).to be_success
-      end
-
-      it 'stores a new contract to the database' do
-        expect {operation}.to change(Contract, :count).by(1)
-      end
-
-      it 'makes overlapped contracts inactive' do
-        operation
-        expect(a77_contract_1.reload.active?).to be_falsey
-        expect(a77_contract_2.reload.active?).to be_falsey
-        expect(a77_contract_3.reload.active?).to be_falsey
-        expect(a77_contract_4.reload.active?).to be_falsey
-        expect(a77_contract_5.reload.active?).to be_falsey
-        expect(a77_contract_6.reload.active?).to be_falsey
-      end
+      it_behaves_like 'ContractCreateWithSupersede'
 
       it "does't change not overlapped contracts" do
         operation
@@ -215,14 +178,9 @@ RSpec.describe Contract::Create do
         expect(a77_contract_8.reload.active?).to be_truthy
         expect(a77_contract_9.reload.active?).to be_truthy
       end
-
-      it "does't change other contracts" do
-        operation
-        expect(a78_contract.reload.active?).to be_truthy
-      end
     end
 
-    context 'contract initially inactive' do
+    context 'contract is initially inactive' do
       let(:contract_attributes) do
         Hash[
             :number, 'A77',
@@ -235,13 +193,7 @@ RSpec.describe Contract::Create do
         ]
       end
 
-      it 'returns success' do
-        expect(operation).to be_success
-      end
-
-      it 'stores a new contract to the database' do
-        expect {operation}.to change(Contract, :count).by(1)
-      end
+      it_behaves_like 'ContractCreateSuccess'
 
       it "doesn't make overlapped contracts inactive" do
         operation
@@ -269,17 +221,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({number: ['is missing']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{number: ['is missing']}}
         end
       end
 
@@ -296,18 +239,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({number: ['must be filled']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{number: ['must be filled']}}
         end
       end
 
@@ -324,17 +257,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({number: ['must be a string']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{number: ['must be a string']}}
         end
       end
     end
@@ -352,17 +276,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({start_date: ['is missing']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{start_date: ['is missing']}}
         end
       end
 
@@ -379,17 +294,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({start_date: ['must be filled']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{start_date: ['must be filled']}}
         end
       end
 
@@ -406,17 +312,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({start_date: ['must be a date']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{start_date: ['must be a date']}}
         end
       end
     end
@@ -435,17 +332,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({end_date: ['must be a date']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{end_date: ['must be a date']}}
         end
       end
     end
@@ -464,17 +352,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({fixed_fee_rate: ['is missing']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{fixed_fee_rate: ['is missing']}}
         end
       end
 
@@ -491,17 +370,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({fixed_fee_rate: ['must be filled']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{fixed_fee_rate: ['must be filled']}}
         end
       end
 
@@ -518,17 +388,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({fixed_fee_rate: ['must be a float']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{fixed_fee_rate: ['must be a float']}}
         end
       end
 
@@ -538,24 +399,15 @@ RSpec.describe Contract::Create do
               :number, "A77",
               :start_date, '2020-03-15',
               :end_date, '2020-03-30',
-              :fixed_fee_rate, - 5,
+              :fixed_fee_rate, -5,
               :additional_fee_rate, 1.2,
               :days_included, 14,
               :active, true
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({fixed_fee_rate: ['must be greater than or equal to 0']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{fixed_fee_rate: ['must be greater than or equal to 0']}}
         end
       end
     end
@@ -574,17 +426,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({additional_fee_rate: ['is missing']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{additional_fee_rate: ['is missing']}}
         end
       end
 
@@ -601,17 +444,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({additional_fee_rate: ['must be filled']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{additional_fee_rate: ['must be filled']}}
         end
       end
 
@@ -628,17 +462,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({additional_fee_rate: ['must be a float']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{additional_fee_rate: ['must be a float']}}
         end
       end
 
@@ -649,23 +474,14 @@ RSpec.describe Contract::Create do
               :start_date, '2020-03-15',
               :end_date, '2020-03-30',
               :fixed_fee_rate, 2,
-              :additional_fee_rate, - 2,
+              :additional_fee_rate, -2,
               :days_included, 14,
               :active, true
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({additional_fee_rate: ['must be greater than or equal to 0']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{additional_fee_rate: ['must be greater than or equal to 0']}}
         end
       end
     end
@@ -684,17 +500,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({days_included: ['is missing']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{days_included: ['is missing']}}
         end
       end
 
@@ -711,17 +518,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({days_included: ['must be filled']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{days_included: ['must be filled']}}
         end
       end
 
@@ -738,17 +536,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({days_included: ['must be an integer']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{days_included: ['must be an integer']}}
         end
       end
 
@@ -765,17 +554,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({days_included: ['must be greater than or equal to 0']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{days_included: ['must be greater than or equal to 0']}}
         end
       end
     end
@@ -794,17 +574,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({active: ['is missing']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{active: ['is missing']}}
         end
       end
 
@@ -821,17 +592,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({active: ['must be filled']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{active: ['must be filled']}}
         end
       end
 
@@ -848,17 +610,8 @@ RSpec.describe Contract::Create do
           ]
         end
 
-        it 'returns success' do
-          expect(operation).to be_failure
-        end
-
-        it "doesn't store a new contract to the database" do
-          expect {operation}.to_not change(Contract, :count)
-        end
-
-        it 'adds an error message to the operation error list' do
-          operation
-          expect(operation[:errors]).to eq({active: ['must be boolean']})
+        it_behaves_like 'InvalidContractCreateOperation' do
+          let(:errors) {{active: ['must be boolean']}}
         end
       end
     end
@@ -877,17 +630,8 @@ RSpec.describe Contract::Create do
       ]
     end
 
-    it 'returns success' do
-      expect(operation).to be_failure
-    end
-
-    it "doesn't store a new contract to the database" do
-      expect {operation}.to_not change(Contract, :count)
-    end
-
-    it 'adds an error message to the operation error list' do
-      operation
-      expect(operation[:errors]).to eq({dates_sequence: ["End date can't be earlier than start date"]})
+    it_behaves_like 'InvalidContractCreateOperation' do
+      let(:errors) {{dates_sequence: ["End date can't be earlier than start date"]}}
     end
   end
 end

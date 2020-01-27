@@ -110,7 +110,7 @@ RSpec.describe Contract::Invoice::Create do
         Hash[
             :contract_number, 'A77',
             :issue_date, 25.days.ago.to_date.to_s,
-            :purchase_date, 23.days.ago.to_date.to_s,
+            :purchase_date, 24.days.ago.to_date.to_s,
             :paid_date, nil,
             :due_date, 10.days.from_now.to_date.to_s,
             :amount, 1000

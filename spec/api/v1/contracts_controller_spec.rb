@@ -43,13 +43,7 @@ RSpec.describe Api::V1::ContractsController do
           ]
         end
 
-        it 'returns failure with  the unprocessable entity' do
-          expect(response.status).to eq 422
-        end
-
-        it 'returns json according to the schema' do
-          expect(response).to match_response_schema('contract_post_failure')
-        end
+        it_behaves_like 'FailureContract'
       end
 
       context 'invalid data sequence' do
@@ -66,13 +60,7 @@ RSpec.describe Api::V1::ContractsController do
           ]
         end
 
-        it 'returns failure with  the unprocessable entity' do
-          expect(response.status).to eq 422
-        end
-
-        it 'returns json according to the schema' do
-          expect(response).to match_response_schema('contract_post_failure')
-        end
+        it_behaves_like 'FailureContract'
       end
     end
   end
