@@ -39,5 +39,4 @@ class Contract::Invoice::Create < Trailblazer::Operation
     @invoice.save!
     options[:result] = @invoice
   end
-
 end

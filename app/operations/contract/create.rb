@@ -66,12 +66,12 @@ class Contract::Create < Trailblazer::Operation
                 .where('(start_date <= ? AND end_date >= ?) OR
                         (start_date <= ? AND end_date >= ?) OR
                         (start_date >= ? AND end_date <= ?)',
-                       new_contract_start_date,
-                       new_contract_start_date,
-                       new_contract_end_date,
-                       new_contract_end_date,
-                       new_contract_start_date,
-                       new_contract_end_date
+                         new_contract_start_date,
+                         new_contract_start_date,
+                         new_contract_end_date,
+                         new_contract_end_date,
+                         new_contract_start_date,
+                         new_contract_end_date
                 )
         )
   end

@@ -120,7 +120,6 @@ RSpec.describe Contract::Create do
         operation
         expect(a77_contract_7.reload.active?).to be_truthy
       end
-
     end
 
     context 'end date present' do
@@ -485,7 +484,6 @@ RSpec.describe Contract::Create do
               :end_date, '2020-03-30',
               :fixed_fee_rate, 1.2,
               :additional_fee_rate, 1.2,
-              # :days_included, 14,
               :active, true
           ]
         end
@@ -534,7 +532,7 @@ RSpec.describe Contract::Create do
       context 'negative number' do
         let(:contract_attributes) do
           Hash[
-              :number, "A77",
+              :number, 'A77',
               :start_date, '2020-03-15',
               :end_date, '2020-03-30',
               :fixed_fee_rate, 2,
@@ -559,8 +557,7 @@ RSpec.describe Contract::Create do
               :end_date, '2020-03-30',
               :fixed_fee_rate, 1.2,
               :additional_fee_rate, 1.2,
-              :days_included, 14,
-          # :active, true
+              :days_included, 10
           ]
         end
 
@@ -572,7 +569,7 @@ RSpec.describe Contract::Create do
       context 'missing value' do
         let(:contract_attributes) do
           Hash[
-              :number, "A77",
+              :number, 'A77',
               :start_date, '2020-03-15',
               :end_date, '2020-03-30',
               :fixed_fee_rate, 1,
@@ -590,13 +587,13 @@ RSpec.describe Contract::Create do
       context 'invalid type' do
         let(:contract_attributes) do
           Hash[
-              :number, "A77",
+              :number, 'A77',
               :start_date, '2020-03-15',
               :end_date, '2020-03-30',
               :fixed_fee_rate, 2,
               :additional_fee_rate, 2,
               :days_included, 10,
-              :active, "string"
+              :active, 'string'
           ]
         end
 

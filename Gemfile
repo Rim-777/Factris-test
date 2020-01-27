@@ -28,10 +28,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner'
-  gem 'json_spec'
   gem "json_matchers"
-  gem 'rails-controller-testing'
-  gem 'rspec-mocks'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

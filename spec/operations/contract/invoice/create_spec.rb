@@ -89,7 +89,6 @@ RSpec.describe Contract::Invoice::Create do
       context 'missing key' do
         let(:invoice_attributes) do
           Hash[
-              # :contract_number, 'A77',
               :issue_date, '2020-03-16',
               :purchase_date, '2020-03-16',
               :paid_date, '2020-04-08',
@@ -143,7 +142,6 @@ RSpec.describe Contract::Invoice::Create do
         let(:invoice_attributes) do
           Hash[
               :contract_number, 'A77',
-              # :issue_date, '2020-03-16',
               :purchase_date, '2020-03-16',
               :paid_date, '2020-04-08',
               :due_date, '2020-03-30',
@@ -176,7 +174,7 @@ RSpec.describe Contract::Invoice::Create do
       context 'invalid format' do
         let(:invoice_attributes) do
           Hash[
-              :contract_number, "A77",
+              :contract_number, 'A77',
               :issue_date, '20-20-12',
               :purchase_date, '2020-03-16',
               :paid_date, '2020-04-08',
@@ -197,7 +195,6 @@ RSpec.describe Contract::Invoice::Create do
           Hash[
               :contract_number, 'A77',
               :issue_date, '2020-03-16',
-              # :purchase_date, '2020-03-16',
               :paid_date, '2020-04-08',
               :due_date, '2020-03-30',
               :amount, 1000
@@ -229,7 +226,7 @@ RSpec.describe Contract::Invoice::Create do
       context 'invalid format' do
         let(:invoice_attributes) do
           Hash[
-              :contract_number, "A77",
+              :contract_number, 'A77',
               :issue_date, '2020-03-16',
               :purchase_date, '2020-03',
               :paid_date, '2020-04-08',
@@ -248,7 +245,7 @@ RSpec.describe Contract::Invoice::Create do
       context 'invalid format' do
         let(:invoice_attributes) do
           Hash[
-              :contract_number, "A77",
+              :contract_number, 'A77',
               :issue_date, '2020-03-16',
               :purchase_date, '2020-03-18',
               :paid_date, '2020-20-08',
@@ -301,7 +298,7 @@ RSpec.describe Contract::Invoice::Create do
       context 'invalid format' do
         let(:invoice_attributes) do
           Hash[
-              :contract_number, "A77",
+              :contract_number, 'A77',
               :issue_date, '2020-03-16',
               :purchase_date, '2020-03-17',
               :paid_date, '2020-04-08',
@@ -325,7 +322,6 @@ RSpec.describe Contract::Invoice::Create do
               :purchase_date, '2020-03-16',
               :paid_date, '2020-04-08',
               :due_date, '2020-03-30',
-          # :amount, 1000
           ]
         end
 
@@ -354,7 +350,7 @@ RSpec.describe Contract::Invoice::Create do
       context 'invalid type' do
         let(:invoice_attributes) do
           Hash[
-              :contract_number, "A77",
+              :contract_number, 'A77',
               :issue_date, '2020-03-16',
               :purchase_date, '2020-03-17',
               :paid_date, '2020-04-08',
@@ -371,7 +367,7 @@ RSpec.describe Contract::Invoice::Create do
       context 'is negative' do
         let(:invoice_attributes) do
           Hash[
-              :contract_number, "A77",
+              :contract_number, 'A77',
               :issue_date, '2020-03-16',
               :purchase_date, '2020-03-17',
               :paid_date, '2020-04-08',
